@@ -4,7 +4,31 @@
 To develop and fine tune the Monte Carlo algorithm to stabilize the Cart Pole.
 
 ## PROBLEM STATEMENT
-Explain the problem statement.
+Implement an on-policy SARSA agent to balance the CartPole (keep the pole upright) by learning an action-value function Q(s,a) from interactions. The agent should learn a policy that maximizes episode length / cumulative reward while being robust and sample-efficient; report training curves, final policy performance, and convergence diagnostics.
+
+## DESIGN STEPS
+Environment & objective
+
+Use the CartPole environment (discrete actions: left/right). Objective: maximize cumulative reward (episode length) until pole stays upright for target steps.
+
+State & action representation
+
+Use the environment’s state vector (cart position, cart velocity, pole angle, pole angular velocity). Optionally discretize continuous dimensions into bins for tabular SARSA, or use function approximation (linear features / NN) if you want generalization.
+
+Reward design & termination
+
+Use the environment’s standard reward (+1 per time step survived). Confirm terminal conditions (pole angle / cart position limits) from the spec. Consider small shaping only if training is slow.
+
+Algorithm choice & update rule
+
+Implement on-policy SARSA update:
+Q(s,a) ← Q(s,a) + α [r + γ Q(s′,a′) − Q(s,a)]
+
+Use ε-greedy policy for action selection; update using the actually taken action a′ (on-policy).
+
+Hyperparameters & exploration schedule
+
+Start with α∈[0.1,0.5], γ≈0.99, ε start 1.0 → decay to 0.01 over episodes (or use ε = max(0.01, 1/√episode)). Tune by experiments.
 
 ## MONTE CARLO CONTROL ALGORITHM FOR CART POLE BALANCING
 DEVELOPED BY: ROHIT G
